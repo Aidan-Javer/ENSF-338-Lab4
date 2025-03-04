@@ -18,13 +18,13 @@ def track_capacity_changes(max_elements):
     prev_size = sys.getsizeof(lst)
     last_trigger_size = 0
     for i in range(max_elements):
-        lst.append(i)
+        lst.append(0)
         current_size = sys.getsizeof(lst)
         if current_size != prev_size:
             print(f"Capacity changed at len={len(lst)} (new sizeof={current_size})")
-            last_trigger_size = len(lst)
+            last_trigger_size = len(lst) - 1
             prev_size = current_size
-    return last_trigger_size - 1  
+    return last_trigger_size 
 
 ## Part 3 & 4 ##
 def test_resize(lst):
@@ -38,8 +38,24 @@ def test_no_resize(lst):
 
 if __name__ == "__main__":
     s = track_capacity_changes(64) 
-    print(f"Final S where resize occurs: {s}")
+    print(f"Final S where appending causes resize: {s}")
 
+    resize_avg_tm = []
+    no_resize_avg_tm = []
+
+    for x in range(1000):
+        lst_resize = [0 for x in range(s)]
+        lst_no_resize = [0 for x in range(s - 1)]
+
+        resize_times = timeit.timeit(lambda: lst_resize.append(0), number=1)
+        no_resize_times = timeit.timeit(lambda: lst_no_resize.append(0), number=1)
+
+        resize_avg_tm.append(resize_times)
+        no_resize_avg_tm.append(no_resize_times)
+
+    print(f"Avg resize time (S->S+1): {sum(resize_avg_tm)/len(resize_avg_tm):.8f} sec")
+    print(f"Avg no-resize time (S-1->S): {sum(no_resize_avg_tm)/len(no_resize_avg_tm):.8f} sec")
+    '''
 ## Parts 3 & 4 ##
     lst = []
     for i in range (s - 1):
@@ -49,9 +65,17 @@ if __name__ == "__main__":
 
     print(f"Avg resize time (S->S+1): {sum(resize_times)/len(resize_times):.8f} sec")
     print(f"Avg no-resize time (S-1->S): {sum(no_resize_times)/len(no_resize_times):.8f} sec")
-
+    '''
+    plt.hist(resize_avg_tm, bins=30, alpha=0.5, label='Resize (S -> S+1)')
+    plt.hist(no_resize_avg_tm, bins=30, alpha=0.5, label='No Resize (S-1 -> S)')
+    plt.xlim(0, 0.00001)
+    plt.xlabel("Time (seconds)")
+    plt.ylabel("Frequency")
+    plt.title("Append Operation Time Distribution")
+    plt.legend()
+    plt.show()
 ## Part 5 ##
-
+"""
     plt.hist(resize_times, bins=30, alpha=0.5, label='Resize (S -> S+1)')
     plt.hist(no_resize_times, bins=30, alpha=0.5, label='No Resize (S-1 -> S)')
     plt.xlabel("Time (seconds)")
@@ -59,7 +83,7 @@ if __name__ == "__main__":
     plt.title("Append Operation Time Distribution")
     plt.legend()
     plt.show()
-
+"""
 
 """
 Going from a list size of S -> S + 1 should take longer than S - 1 -> S because the first operation involves the deallocation and reallocation
