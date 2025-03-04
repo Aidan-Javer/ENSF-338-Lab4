@@ -20,6 +20,3 @@ def processdata_modified(li):
             if li[i] > 5:
                 li[i] *= 2
     return li
-
-print(processdata([1, 2, 3, 4, 5, 6, 7, 8, 9]))
-print(processdata_modified([1, 2, 3, 4, 5, 6, 7, 8, 9]))
