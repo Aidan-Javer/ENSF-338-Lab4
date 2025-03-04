@@ -3,7 +3,6 @@ def processdata(li):
         if li[i] > 5:
             for j in range(len(li)):
                 li[i] *= 2
-    return li
 
 """
 Question 1:
@@ -19,4 +18,3 @@ def processdata_modified(li):
         for j in range(len(li)):
             if li[i] > 5:
                 li[i] *= 2
-    return li
