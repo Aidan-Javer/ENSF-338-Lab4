@@ -5,16 +5,15 @@ def linear_search(arr, val):    # Inefficient linear search
     return -1
 
 def binary_search(arr, low, high, val):     # Efficient binary search
-    if high >= low:
+    while low <= high:
         mid = (low + high) // 2
         if val == arr[mid]:
             return mid
         elif val > arr[mid]:
-            return binary_search(arr, mid + 1, high, val)
+            low = mid + 1
         else:
-            return binary_search(arr, low, mid - 1, val)
-    else:
-        return -1
+            high = mid - 1
+    return -1
 
 """
 Question 4:
@@ -24,15 +23,16 @@ The worst case complexity for binary search is O(log(n)) and occurs when the val
 import timeit
 from matplotlib import pyplot as plt
 
-list_lengths = range(1000, 21000, 1000)
+num_list = [x for x in range(1000)]
+list_lengths = range(1000, 26000, 1000)
 linear_avg_times = []
 binary_avg_times = []
 for i in list_lengths:
-    num_list = range(i)
+    num_list = list(range(i))
     val = len(num_list) - 1
     linear_times = []
     binary_times = []
-    for i in range(100):
+    for j in range(100):
         linear_tm = timeit.timeit(lambda: linear_search(num_list, val), number = 1)
         linear_times.append(linear_tm)
 
@@ -45,3 +45,8 @@ for i in list_lengths:
 plt.figure(figsize=(9, 7))
 plt.scatter(list_lengths, linear_avg_times, color='r', label="Linear Search")
 plt.scatter(list_lengths, binary_avg_times, color='b', label="Binary Search")
+plt.legend()
+plt.title("Time Required to Search for Last Element in Array")
+plt.ylabel("Time required (s)")
+plt.xlabel("Array size")
+plt.savefig("ex4.2.png")
