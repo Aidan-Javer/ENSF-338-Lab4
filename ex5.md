@@ -1,5 +1,5 @@
 ﻿# Question 5
-1. timeit essentially runs the code snippet provided via the function a number of times specified by the users. With the following example:
+1. timeit essentially runs the code snippet provided via the function a number of times specified by the user. Referring to the following example:
 `elapsed_time  =  timeit.timeit(lambda:  fibonacci(1000), number=100)`
 The Fibonacci function will receive the argument 1000, and timeit.timeit will return the total elapsed time across the 100 runs of fibonacci(1000). timeit.timeit should be used when one significant measurement is enough. Such cases are moreso appliable to optimizing smaller snippets of code, where the execution time will remain far more consistent. Also useful for a rough estimation.
 On the other hand, repeat serves to run timeit itself multiple times, which will run the it's corresponding function. Looking at the following example:
